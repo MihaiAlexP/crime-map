@@ -54,6 +54,38 @@ export default Marionette.View.extend({
         this.getRectangleCoordinates();
 
         this.infoWindow = new google.maps.InfoWindow();
+
+        this.initSearchBox();
+    },
+
+    initSearchBox: function() {
+        // Create the search box and link it to the UI element.
+        var input = this.$el.find('#pac-input')[0];
+        this.autocomplete = new google.maps.places.Autocomplete(input);
+        this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+        this.autocomplete.addListener('place_changed', _.bind(function() {
+            var place = this.autocomplete.getPlace();
+            if (place.length == 0) {
+                return;
+            }
+
+            // If the place has a geometry, then present it on a map.
+            if (place.geometry.viewport) {
+                this.map.fitBounds(place.geometry.viewport);
+            } else {
+                this.map.setCenter(place.geometry.location);
+                this.map.setZoom(15);  // Why 17? Because it looks good.
+            }
+            console.log(place);
+
+            this.rectangle.setBounds(
+                new google.maps.LatLng(
+                    place.geometry.location.lat(),
+                    place.geometry.location.lng()
+                )
+            );
+        }, this));
     },
 
     getRectangleCoordinates: function() {

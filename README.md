@@ -15,5 +15,9 @@
 ## User can drag the rectangle on map and it will show a markers for each crime
 ## Clicking a marker will show the crime description
 ## The most recent month with data is 09 2017
-## An improvment would be to add functionality for users to select the date
-## Another improvement would be to allow user to resize the selected rectangle
+# Improvements:
+## - add functionality for users to select the date
+## - allow user to resize the selected rectangle
+## - display a message if no data available for selected month and location
+## - load google maps asynchronous to improve initial loading time
+## - add google maps tests
