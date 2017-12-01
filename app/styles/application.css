@@ -12,3 +12,12 @@ h1 {
     margin-bottom: 0.5em;
     font-size: 2em;
 }
+
+#map {
+    height: 480px;
+    width: 100%;
+}
+
+.text-center {
+    text-align: center;
+}
