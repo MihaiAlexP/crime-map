@@ -11,6 +11,8 @@
   - `npm run test` - run test with watch mode for continuous feedback
   - `npm run test-ci` - run test once
 
+- Compiled version available in /public. Open the index.html in a browser
+
 # A few notes:
 ## User can search with autocompletion in the Search Box
 ## User can drag the rectangle on map and it will show a markers for each crime
