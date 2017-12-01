@@ -56,13 +56,6 @@ export default Marionette.View.extend({
     },
 
     makeBounds: function(center, width, height) {
-        // var ne = google.maps.geometry.spherical.computeOffset(
-        //     nw, (metersEast / 2) * -1, 90
-        // );
-        // var sw = google.maps.geometry.spherical.computeOffset(
-        //     nw, (metersSouth / 2) * -1, 180
-        // );
-
         var north = google.maps.geometry.spherical.computeOffset(
                 center, height / 2, 0
             ),
