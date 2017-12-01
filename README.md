@@ -12,6 +12,7 @@
   - `npm run test-ci` - run test once
 
 # A few notes:
+## User can search with autocompletion in the Search Box
 ## User can drag the rectangle on map and it will show a markers for each crime
 ## Clicking a marker will show the crime description
 ## The most recent month with data is 09 2017

@@ -25,21 +25,18 @@ export default Marionette.View.extend({
     },
 
     initializeMap: function() {
-        // center map to Syzygy office
+        // center map with initial location
+        var nw = new google.maps.LatLng(51.5203, -0.1202);
+
         this.mapOptions = {
-            center: {lat: 51.5203, lng: -0.1202},
+            center: nw,
             zoom: 15
         };
 
         this.map = new google.maps.Map(this.$el.find('#map')[0],
                                         this.mapOptions);
 
-        var bounds = {
-            north: 51.523,
-            south: 51.516,
-            east: -0.1119,
-            west: -0.1250
-        };
+        var bounds = this.makeBounds(nw, 1000, 1000);
 
         this.rectangle = new google.maps.Rectangle({
             bounds: bounds,
@@ -56,6 +53,30 @@ export default Marionette.View.extend({
         this.infoWindow = new google.maps.InfoWindow();
 
         this.initSearchBox();
+    },
+
+    makeBounds: function(center, width, height) {
+        // var ne = google.maps.geometry.spherical.computeOffset(
+        //     nw, (metersEast / 2) * -1, 90
+        // );
+        // var sw = google.maps.geometry.spherical.computeOffset(
+        //     nw, (metersSouth / 2) * -1, 180
+        // );
+
+        var north = google.maps.geometry.spherical.computeOffset(
+                center, height / 2, 0
+            ),
+            south = google.maps.geometry.spherical.computeOffset(
+                center, height / 2, 180
+            ),
+            northEast = google.maps.geometry.spherical.computeOffset(
+                north, width / 2, 90
+            ),
+            southWest = google.maps.geometry.spherical.computeOffset(
+                south, width / 2, -90
+            );
+
+        return new google.maps.LatLngBounds(southWest, northEast);
     },
 
     initSearchBox: function() {
@@ -75,16 +96,19 @@ export default Marionette.View.extend({
                 this.map.fitBounds(place.geometry.viewport);
             } else {
                 this.map.setCenter(place.geometry.location);
-                this.map.setZoom(15);  // Why 17? Because it looks good.
             }
-            console.log(place);
+            this.map.setZoom(15);
 
-            this.rectangle.setBounds(
-                new google.maps.LatLng(
-                    place.geometry.location.lat(),
-                    place.geometry.location.lng()
-                )
+            var nw = new google.maps.LatLng(
+                place.geometry.location.lat(),
+                place.geometry.location.lng()
             );
+
+            var bounds = this.makeBounds(nw, 1000, 1000);
+            this.rectangle.setBounds(bounds);
+
+            // trigger dragend event to render markers
+            google.maps.event.trigger(this.rectangle, 'dragend');
         }, this));
     },
 
